@@ -71,7 +71,6 @@ transfer(msg.sender, to, amount);
 * [hyeon777/DEX_Solidity](https://github.com/hyeon777/DEX_Solidity/blob/2ae38134e37923d5331fd1bae046dbabf0a83d2d/src/Dex.sol#L54)
 * [jun4n/DEX_solidity](https://github.com/jun4n/DEX_solidity/blob/08dc46f0f3b54633bef050802f8faa7ee0ef45dd/src/Dex.sol#L66)
 * [dlanaraa/DEX_solidity](https://github.com/dlanaraa/DEX_solidity/blob/766dc1dca3cc92362959044d9555800fca5c153e/src/dex.sol#L92)
-*
 
 ## 5. 유동성 공급시 발급된 lp토큰과 다른 수량의 페어를 공급함.
 
@@ -89,3 +88,47 @@ transfer(msg.sender, to, amount);
 * [jw-dream/DEX_solidity](https://github.com/jw-dream/DEX_solidity/blob/1af89959aa9c624e7da651a3a752d1627fff7f9e/Dex_solidity/src/Dex.sol#L62-L67)
 * [kimziwu/DEX_solidity](https://github.com/kimziwu/DEX_solidity/blob/49c002dec844ced9bdae62d5a01c0d641899e211/src/Dex.sol#L116-L125)
 * [jt-dream/Dex_solidity](https://github.com/jt-dream/Dex_solidity/blob/a08ea83a3335588d868bcf01114de3a57cb0cada/src/Dex.sol#L40-L48)
+
+## 6. 마지막에 유동성 공급하는 경우에 많은 lp 토큰이 발급됨.
+
+### 설명
+같은수량으로 유동성을 공급하면 발급되는 lp토큰도 동일한 수량 이여야 하지만, 그렇지 못한 버그가 발견됨.
+```
+function testAddLiquidity8() external {
+    tokenX.transfer(address(dex), 1000 ether);
+    uint lp = dex.addLiquidity(3000 ether, 4000 ether, 0);
+    emit log_named_uint("LP", lp);
+
+    tokenX.transfer(address(dex), 1000 ether);
+    uint lp2 = dex.addLiquidity(5000 ether, 4000 ether, 0);
+    emit log_named_uint("LP", lp);
+
+
+    address other_eoa = vm.addr(1);
+    tokenX.transfer(other_eoa, 10000 ether);
+    tokenY.transfer(other_eoa, 10000 ether);
+    vm.startPrank(other_eoa);
+
+    tokenX.approve(address(dex), type(uint).max);
+    tokenY.approve(address(dex), type(uint).max);
+
+    uint lp3 = dex.addLiquidity(5000 ether, 4000 ether, 0);
+    emit log_named_uint("LP3", lp3);
+
+    vm.stopPrank();
+
+    (uint rx, uint ry) = dex.removeLiquidity(lp, 0, 0);
+    assertEq(rx, 5000 ether, "rx failed");
+    assertEq(ry, 4000 ether, "ry failed");
+}
+```
+위와같은 테스트 코드로 확인하였음.
+
+### 파급력
+심각도는 Information으로 결국에 잘못된 공식으로 lp토큰을 발급하는 만큼 나중에 정합성이 떨어지는 문제가 발생하게됩니다.
+
+### 해결방안
+공급하려는 유동성만큼이 현재 풀에 공급되어있는 수량에 비해서 어느정도인지 확인하고 그 수량을 현재 발급된 lp토큰에 비례하여 발급하여줘야합니다.
+
+### 해당 취약점  발견된 목록
+* [seonghwi-lee/Lending-DEX_solidity](https://github.com/seonghwi-lee/Lending-DEX_solidity/blob/f1160956b920513e3cf0e0c3b2a5097f08916c7d/src/Dex.sol)
