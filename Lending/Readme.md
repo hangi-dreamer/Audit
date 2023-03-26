@@ -50,3 +50,20 @@ withdraw 함수 구현을 Checks Effects Interaction Pattern으로 변경해야�
 * [Namryeong-Kim/Lending_solidity](https://github.com/Namryeong-Kim/Lending_solidity/blob/a732de5c30b9c0ca9ee12cccbbf4d6a267432d30/src/DreamAcademyLending.sol#L130)
 * [2-Sunghoon-Moon/Lending_solidity](https://github.com/2-Sunghoon-Moon/Lending_solidity/blob/bd5fab0c28da7b02a0f79c7a86c5f87b0b443dbf/src/DreamAcademyLending.sol#L280)
 * [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L207)
+
+## 3. 서비스 거부 공격
+### 설명
+사용자 수 만큼 for loop(while loop) 을 돌아야할때, 공격자가 가스비를 많이 소모하게 하여 결국에 컨트랙트의 특정 기능(for loop이 있는)을 사용하지 못하게하거나 가스비가 매우 많이 들게 하는 공격
+
+### 파급력
+심각도는 Informational로써 자산이 탈취당하거나 공격자가 설계한 비정상적인 로직이 실행되는건 아니지만 잠재적인 위험 요소라고 판단됩니다.
+
+### 해결방안
+상황마다 달라서 명확한 해결책은 없고, 사용자나 공격자의 어떤 행동에 의해 반복문 실행 회수가 쉽게 증가하지 않는 구조가 가능할지 검토해봐야합니다.
+
+### 해당 취약점 발견된 목록
+* [Gamj4tang/Lending_solidity](https://github.com/Gamj4tang/Lending_solidity/blob/25387e051e05d5a3022425b8d2af366a6d9051bc/src/DreamAcademyLending.sol#L251)
+* [2-Sunghoon-Moon/Lending_solidity](https://github.com/2-Sunghoon-Moon/Lending_solidity/blob/bd5fab0c28da7b02a0f79c7a86c5f87b0b443dbf/src/DreamAcademyLending.sol#L334)
+* [jun4n/Lending_solidity](https://github.com/jun4n/Lending_solidity/blob/fd3baab9a9c6384e6dfb767c23ce2f81cc1de913/src/DreamAcademyLending.sol#L86)
+* [Sophie00Seo/Lending_solidity](https://github.com/Sophie00Seo/Lending_solidity/blob/e9ab337f8c8bb629c66613ef050b7533cbeee651/src/DreamAcademyLending.sol#L76)
+* [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L50)
