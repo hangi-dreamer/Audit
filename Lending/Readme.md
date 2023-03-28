@@ -51,6 +51,10 @@ withdraw 함수 구현을 Checks Effects Interaction Pattern으로 변경해야�
 * [2-Sunghoon-Moon/Lending_solidity](https://github.com/2-Sunghoon-Moon/Lending_solidity/blob/bd5fab0c28da7b02a0f79c7a86c5f87b0b443dbf/src/DreamAcademyLending.sol#L280)
 * [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L207)
 
+### 스크린샷
+![image](https://user-images.githubusercontent.com/127647300/228128932-b8e8d5de-dd51-4d83-b059-a6169e8b7de7.png)
+
+
 ## 3. 서비스 거부 공격
 ### 설명
 사용자 수 만큼 for loop(while loop) 을 돌아야할때, 공격자가 가스비를 많이 소모하게 하여 결국에 컨트랙트의 특정 기능(for loop이 있는)을 사용하지 못하게하거나 가스비가 매우 많이 들게 하는 공격
