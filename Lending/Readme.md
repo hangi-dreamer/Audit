@@ -37,7 +37,6 @@ function testWithdrawAtt() external {
 ### 해당 취약점 발견된 목록
 * [dlanaraa/Lending_solidity](https://github.com/dlanaraa/Lending_solidity/blob/55071b255a24d87517629b1d37672bc4ab580acc/src/DreamAcademyLending.sol#L127-L128)
 * [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44)
-* [jun4n/Lending_solidity](https://github.com/jun4n/Lending_solidity/blob/fd3baab9a9c6384e6dfb767c23ce2f81cc1de913/src/DreamAcademyLending.sol#L125)
 
 ### 스크린샷
 <img width="560" alt="image" src="https://user-images.githubusercontent.com/127647300/228133955-fbd62f72-eae3-49dc-a64f-29262483ba8e.png">
