@@ -1,7 +1,7 @@
 ## 1. initializeLendingProtocol 함수 구현 오류
 
 ### 설명
-[DreamAcademyLending.sol 44행]([https://github.com/dlanaraa/Lending_solidity/blob/55071b255a24d87517629b1d37672bc4ab580acc/src/DreamAcademyLending.sol#L127-L128](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44))에서 이더리움을 보냈지만 usdc에 대한 잔고를 올리도록 구현되어있어서,
+[DreamAcademyLending.sol 44행](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44)에서 이더리움을 보냈지만 usdc에 대한 잔고를 올리도록 구현되어있어서,
 
 withdraw함수에서 보내지도 않은 usdc를 받을 수 있도록 될꺼같습니다.
 
