@@ -37,10 +37,6 @@ function testWithdrawAtt() external {
 ### 해당 취약점 발견된 목록
 * [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44)
 
-### 스크린샷
-<img width="560" alt="image" src="https://user-images.githubusercontent.com/127647300/228133955-fbd62f72-eae3-49dc-a64f-29262483ba8e.png">
-
-
 ## 2. withdraw에서 call 사용하여 ether 반환할때 re-entrancy 취약점
 
 ### 설명
