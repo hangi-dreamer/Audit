@@ -35,7 +35,6 @@ function testWithdrawAtt() external {
 해당 함수가 external 이기때문에 함수 내부에서 require로 컨트랙트의 admin 만 호출 가능하게하고, 그게 아니면 실제 입금한 자산에 대해서만 잔고를 올리도록 해야합니다.
 
 ### 해당 취약점 발견된 목록
-* [dlanaraa/Lending_solidity](https://github.com/dlanaraa/Lending_solidity/blob/55071b255a24d87517629b1d37672bc4ab580acc/src/DreamAcademyLending.sol#L127-L128)
 * [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44)
 
 ### 스크린샷
