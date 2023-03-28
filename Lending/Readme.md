@@ -1,35 +1,12 @@
 ## 1. initializeLendingProtocol 함수 구현 오류
 
 ### 설명
-[DreamAcademyLending.sol 127-128행](https://github.com/dlanaraa/Lending_solidity/blob/55071b255a24d87517629b1d37672bc4ab580acc/src/DreamAcademyLending.sol#L127-L128)에서 특정 account에 대한 잔고를 보관하는 변수인 _depositETH와 _depositUSDC의 값을 동시에 누적시키고 있어서
+[DreamAcademyLending.sol 44행]([https://github.com/dlanaraa/Lending_solidity/blob/55071b255a24d87517629b1d37672bc4ab580acc/src/DreamAcademyLending.sol#L127-L128](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44))에서 이더리움을 보냈지만 usdc에 대한 잔고를 올리도록 구현되어있어서,
 
-실제로는 address(0x0) 의 reserve만 보냈더라도 잔고에는 _depositUSDC까지 올라가는 결과가 발생하여, withdraw함수에서 인출 가능합니다.
-
-```
-function testWithdrawAtt() external {
-    dreamOracle.setPrice(address(0x0), 1 ether);
-    dreamOracle.setPrice(address(usdc), 1 ether);
-
-    usdc.transfer(address(lending), 1000 ether);
-    lending.initializeLendingProtocol{value: 1000 ether}(address(usdc));
-
-    // 강제로 0으로 만듬.
-    vm.deal(address(this), 0 ether);
-    usdc.transfer(user1, usdc.balanceOf(address(this)));
-
-    console.log("before withdraw eth: %d", address(this).balance);
-    console.log("before withdraw usdc: %d", usdc.balanceOf(address(this)));
-
-    lending.withdraw(address(usdc), 1000 ether);
-    lending.withdraw(address(0x0), 1000 ether);
-
-    console.log("after withdraw eth: %d", address(this).balance);
-    console.log("after withdraw usdc: %d", usdc.balanceOf(address(this)));
-}
-```
+withdraw함수에서 보내지도 않은 usdc를 받을 수 있도록 될꺼같습니다.
 
 ### 파급력
-심각도는 Critical로써 사용자는 ether 혹은 usdc만 initializeLendingProtocol함수를 통해 실제 예치하지 않은 컨트랙트 내의 다른 토큰을 withdraw 할 수 있게되거나 borrow를 통해 비정상적으로 다른 토큰을 빌려갈 수 있습니다.
+심각도는 Critical로써 현재 예제에선 usdc라서 공격자가 손해이지만 이더리움보다 높은 가치의 토큰이 대상이라면 문제가 문제가 됩니다.
 
 ### 해결방안
 해당 함수가 external 이기때문에 함수 내부에서 require로 컨트랙트의 admin 만 호출 가능하게하고, 그게 아니면 실제 입금한 자산에 대해서만 잔고를 올리도록 해야합니다.
